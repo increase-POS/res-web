@@ -1,0 +1,241 @@
+﻿@model resWebApp.Models.InvoiceModel
+@using resWebApp.CustomeHelper
+@using resWebApp.Resources
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@{
+    //ViewBag.Title = "Home Page";
+    System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo(Session["lang"] as string);
+    System.Threading.Thread.CurrentThread.CurrentUICulture = System.Threading.Thread.CurrentThread.CurrentCulture;
+
+
+      var btnStatusDisplay="";
+    if (Model.status == "Done") {
+        btnStatusDisplay = "none";
+    }
+    else {
+        btnStatusDisplay = "";
+    }
+}
+
+
+
+<section class="statis">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="bcrumb-block">
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a id="a_title" href="#">@AppResource.DeliveryList</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">@AppResource.InvoiceDetails</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="c-profile">
+                    <div class="row">
+                        <div class="col-4">
+                            @if (ViewBag.Image == null || ViewBag.Image == "")
+                            {
+                                <img src=@Url.Content("~/" + Session["lang"].ToString() + "/images/avatar.jpg") id="img_Customer" alt="" class="rounded mx-auto text-center">
+                            }
+                            else
+                            {
+                                <img src="@Url.Content(ViewBag.Image)" id="img_Customer" alt="" class="rounded mx-auto text-center">
+                            }
+                        </div>
+                        <div class="col-8 details">
+                            <div>
+                                <p><span>Invoice#: </span>@Model.invNumber</p>
+                            </div>
+                            <div>
+                                <p><span>Customer: </span>@Model.Customer.name</p>
+                            </div>
+                            <div>
+                                <p><span>Mobile: </span>@Model.Customer.mobile</p>
+                            </div>
+                            <div>
+                                <p><span>Address: </span>@Model.Customer.address</p>
+
+                            </div>
+                            @if (Model.Customer.GPSAddress != null && Model.Customer.GPSAddress != "")
+                            {
+                            <div>
+                                <p>
+                                    <span>Map: </span>
+                                    <span>
+                                        <a class="map" href="https://maps.google.com/?q=@Model.Customer.GPSAddress" target=”_blank” >
+                                            <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 122.88 117.55" style="enable-background:new 0 0 122.88 117.55" xml:space="preserve"><path class="st0" d="M78.81,82.78c-4.35,4.77-9.42,9.05-15.12,12.51c-0.7,0.51-1.65,0.58-2.43,0.08 c-8.41-5.35-15.48-11.78-21.03-18.76c-7.66-9.61-12.49-20.27-14.14-30.53c-1.68-10.41-0.11-20.42,5.07-28.56 c2.04-3.22,4.65-6.15,7.83-8.68C46.3,3.01,54.65-0.06,62.96,0c8.01,0.06,15.91,3.05,22.74,9.28c2.4,2.18,4.42,4.68,6.07,7.39 c5.57,9.17,6.77,20.87,4.32,32.73c-2.41,11.71-8.41,23.62-17.28,33.35V82.78L78.81,82.78L78.81,82.78z M25.32,74.54 c1.98,0,3.59,1.61,3.59,3.59c0,1.98-1.61,3.59-3.59,3.59h-6.74l-8.88,28.67h103.22l-9.64-28.67h-5.57c-1.98,0-3.59-1.61-3.59-3.59 c0-1.98,1.61-3.59,3.59-3.59h10.7l14.46,43.01H0l13.32-43.01H25.32L25.32,74.54z M61.38,18.51c9.88,0,17.88,8.01,17.88,17.87 c0,9.88-8.01,17.88-17.88,17.88c-9.88,0-17.87-8-17.87-17.88C43.49,26.51,51.5,18.51,61.38,18.51L61.38,18.51L61.38,18.51z" /></svg>
+                                        </a>
+                                    </span>
+                                </p>
+                            </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+           <div id="mapholder"></div>
+            <div class="col-12">
+                <div class="grid-block">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th scope="col">@AppResource.SequenceNumber</th>
+                                <th scope="col">@AppResource.ItemUnit</th>
+                                <th scope="col">@AppResource.Quantity</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            @foreach (var item in Model.InvoiceItems)
+                            {
+                                <tr>
+                                    <th scope="row">@item.sequence</th>
+                                    <td>@Html.concatStrings(item.itemName, item.unitName)</td>
+                                    <td>@item.quantity</td>
+                                </tr>
+                            }
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="col-12 mb-3">
+                <div class="total-sign">
+                    <div class="row">
+                        <div class="col-6">
+                            <div>
+                                <p class="font-weight-bold text-primary text-uppercase text-center">total:</p>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div>
+                                <p class="text-center">@Html.accuracyFormatWithCurrency((string)Model.totalNet.ToString()) <span></span></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12" id="div-btn-status" style="display:@btnStatusDisplay">
+                <button id="btn-status" class="btn btn-danger btn-block back mb-3" onclick="changeStatus()">
+                    @Html.invoiceNextStatusConverter(Model.status)
+                </button>
+            </div>
+            <div class="col-12">
+                @using (Html.BeginForm("DeliveryList", "Delivery", FormMethod.Post, new { id = "form1" }))
+                {
+                    <input type="hidden" value="@Model.status" id="status" />
+                    <input type="hidden" value="@Model.invoiceId" id="invoiceId" />
+                    <button class="btn btn-dark btn-block back mb-3">@AppResource.Back</button>
+                }
+            </div>
+        </div>
+    </div>
+</section>
+<div class="scroll-to-top" title="Go Up">
+    <i class="fa fa-chevron-up fa-lg"></i>
+</div>
+<script>
+
+    function changeStatus() {
+        var invId = $('#invoiceId').val();
+        var status = $('#status').val();
+
+        $.ajax({
+            url: '@Url.Action("changeDeliveryOrderStatus", "Delivery")',
+            data: { invoiceId: invId, status: status },
+            type: "POST",
+            async: false,
+            success: function (result) {
+                if (result.message != "") {
+                    $('#status').val(result.message);
+                    $('#btn-status').text(result.nextStatus);
+
+                    if (result.message == "Done")
+                        $('#div-btn-status').fadeOut(600);
+                }               
+            },
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+            alert('oops, something bad happened');
+            }
+        });
+    }
+
+    $('#btn_back').click(function () {
+
+        goBack();
+    });
+
+    $('#a_title').click(function () {
+        goBack();
+
+    });
+
+    function goBack() {
+
+        var action = 'DeliveryList';
+        $('#form1').attr('action', action);
+        $('#form1').submit();
+
+        return false;
+        }
+
+    function getLocation() {
+        //if (navigator.geolocation) {
+        //    alert(window.chrome);
+        //    if (window.chrome) {
+        //        alert();
+        //            //set this var looking for Chrome un user-agent header
+        //            options = { enableHighAccuracy: true, maximumAge: 0, timeout: 30000 };
+        //        }
+        //        else {
+        //            options = { maximumAge: Infinity, timeout: 0 };
+        //        }
+        //    // const options = {
+        //    //    //enableHighAccuracy: true,
+        //    //    timeout: 5000,
+        //    //    //maximumAge: 0
+        //    //};
+
+        //    navigator.geolocation.getCurrentPosition(showPosition, error, options); 
+        //}    
+
+       
+    }
+
+    //function showPosition(position) {
+    //    alert();
+    //    var latlondata = position.coords.latitude + ',' + position.coords.longitude;
+    //    alert(latlondata);
+    //    var url = "http://www.google.com/maps/dir/"  + latlondata+"/36.21054072193704,37.1564443499074"
+    //        window.open(url, '_blank');
+ 
+    //}
+
+
+    //function error(err) {
+    //        switch(error.code) {
+    //    case error.PERMISSION_DENIED:
+    //        alert("User denied the request for Geolocation.");
+    //        break;
+    //    case error.POSITION_UNAVAILABLE:
+    //        alert("Location information is unavailable.");
+    //        break;
+    //    case error.TIMEOUT:
+    //       alert("The request to get user location timed out.");
+    //        break;
+    //    case error.UNKNOWN_ERROR:
+    //       alert("An unknown error occurred.");
+    //        break;
+    //}
+    //    }
+
+
+
+  
+   
+</script>

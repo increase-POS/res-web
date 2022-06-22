@@ -1,0 +1,111 @@
+﻿@model resWebApp.Models.OrderPreparingViewModel
+@using resWebApp.CustomeHelper
+@using resWebApp.Resources
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@{
+    //ViewBag.Title = "Home Page";
+    System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo(Session["lang"] as string);
+    System.Threading.Thread.CurrentThread.CurrentUICulture = System.Threading.Thread.CurrentThread.CurrentCulture;
+
+}
+
+
+<section class="statis">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                @using (Html.BeginForm("Reservations", "Reservation", FormMethod.Post, new { id = "form1" }))
+                {
+                    <div class="main-list">
+                        <span></span>
+                        <div class="form-group">
+                            <label for="cnames">@AppResource.Branches</label>
+                            @Html.DropDownList("branchId", (SelectList)ViewBag.branches,  new { @class = "form-control", Id = "branchId" })
+                        </div>
+                    </div>
+                }
+            </div>
+
+            <div class="col-12">
+                <div class="bcrumb-block">
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item active" aria-current="page">@AppResource.PreparingOrders</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="grid-block">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th scope="col">@AppResource.OrderCharp</th>
+                                <th scope="col">@AppResource.InvoiceCharp</th>
+                                <th scope="col">@AppResource.Type</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.PaginatedBlogs())
+                            {
+                                <tr>
+                                    <th scope="row">@item.orderNum</th>
+                                    <td>@item.invNum</td>
+                                    <td>@Html.invoiceTypeConverter(item.invType)</td>
+                                    <td><button class="btn btn-danger btn-sm" onclick="location.href='@Url.Action("OrderPreparingDetails", "Kitchen", new { orderId = item.orderPreparingId })'">@AppResource.Details</button></td>
+                                </tr>
+                            }
+
+                        </tbody>
+                    </table>
+                    @if (Model.Orders.Count() > 0)
+                    {
+                        <nav aria-label="...">
+                            <ul class="pagination">
+                                <li class="@(Model.CurrentPage > 1 ? "page-item " : "page-item disabled")">
+                                    <a class="page-link" href="@Url.Action("OrderPreparingList", "Kitchen", new {  branchId = Session["branchId"], page = Model.CurrentPage - 1 })" tabindex="-1">@AppResource.Previous</a>
+                                </li>
+                                @for (int i = 1; i <= Model.PageCount(); i++)
+                                {
+                                    <li class="@(i == Model.CurrentPage ? "page-item active" : "page-item ")">
+                                        <a class="page-link" href="@Url.Action("OrderPreparingList", "Kitchen", new { branchId = Session["branchId"], page = i })">@i</a>
+                                    </li>
+                                }
+                                <li class="@(Model.CurrentPage < Model.PageCount() ? "page-item " : "page-item disabled")">
+                                    <a class="page-link" href="@Url.Action("OrderPreparingList", "Kitchen", new { branchId = Session["branchId"], page = Model.CurrentPage + 1 })">@AppResource.Next</a>
+                                </li>
+                            </ul>
+                        </nav>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="scroll-to-top" title="Go Up">
+    <i class="fa fa-chevron-up fa-lg"></i>
+</div>
+<script>
+
+    $('#branchId').change(function () {
+        refreshFunc();
+    });
+
+    function refreshFunc() {
+
+        var branchId = $('#branchId').val();
+
+          var action = "OrderPreparingList?branchId=" + branchId ;
+
+        $('#form1').attr('action', action);
+
+         $('#form1').submit();
+        return false;
+    }
+
+
+</script>
