@@ -19,8 +19,8 @@
     <UseIISExpress>true</UseIISExpress>
     <Use64BitIISExpress />
     <IISExpressSSLPort>44348</IISExpressSSLPort>
-    <IISExpressAnonymousAuthentication>disabled</IISExpressAnonymousAuthentication>
-    <IISExpressWindowsAuthentication>enabled</IISExpressWindowsAuthentication>
+    <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
+    <IISExpressWindowsAuthentication>disabled</IISExpressWindowsAuthentication>
     <IISExpressUseClassicPipelineMode />
     <UseGlobalApplicationHostFile />
     <NuGetPackageImportStamp>
@@ -214,6 +214,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
     <Compile Include="Resources\AppResource.ar.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -230,9 +235,15 @@
     <Content Include="ar\css\font-awesome.css" />
     <Content Include="ar\css\style.css" />
     <Content Include="ar\fonts\fontawesome-webfont.svg" />
-    <Content Include="ar\images\avatar.jpg" />
-    <Content Include="ar\images\increase-logo-01.png" />
-    <Content Include="ar\images\increase-logo01.png" />
+    <Content Include="ar\images\avatar.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ar\images\increase-logo-01.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ar\images\increase-logo01.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="ar\js\bootstrap.min.js" />
     <Content Include="ar\js\jquery-2.1.3.min.js" />
     <Content Include="ar\js\main.js" />
@@ -293,9 +304,15 @@
     <Content Include="en\css\font-awesome.css" />
     <Content Include="en\css\style.css" />
     <Content Include="en\fonts\fontawesome-webfont.svg" />
-    <Content Include="en\images\avatar.jpg" />
-    <Content Include="en\images\increase-logo-01.png" />
-    <Content Include="en\images\increase-logo01.png" />
+    <Content Include="en\images\avatar.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="en\images\increase-logo-01.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="en\images\increase-logo01.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="en\js\bootstrap.min.js" />
     <Content Include="en\js\jquery-2.1.3.min.js" />
     <Content Include="en\js\main.js" />
@@ -339,6 +356,10 @@
     <Content Include="Content\fonts\Montserrat-Bold.ttf" />
     <Content Include="Content\fonts\Montserrat-Regular.ttf" />
     <None Include="Properties\PublishProfiles\CustomProfile.pubxml" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
     <Content Include="Scripts\jquery-3.3.1.min.js" />

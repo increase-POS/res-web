@@ -1,0 +1,194 @@
+﻿@model resWebApp.Models.OrderPreparingModel
+@using resWebApp.CustomeHelper
+@using resWebApp.Resources
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@{
+    //ViewBag.Title = "Home Page";
+    System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo(Session["lang"] as string);
+    System.Threading.Thread.CurrentThread.CurrentUICulture = System.Threading.Thread.CurrentThread.CurrentCulture;
+
+
+        var btnStatusDisplay="";
+    if (Model.status == "Done" || (Model.status == "Ready" && Model.shippingCompanyId == null)) {
+        btnStatusDisplay = "none";
+    }
+    else {
+        btnStatusDisplay = "";
+    }
+}
+
+
+    <section class="statis">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="c-profile">
+                        <div class="row">
+                            <div class="col-12 details">
+                                <div>
+                                    <p><span>@AppResource.OrderCharp: </span>@Model.orderNum</p>
+                                </div>
+                                <div>
+                                    <p><span>@AppResource.InvoiceCharp: </span>@Model.invNum</p>
+                                </div>
+                                <div>
+                                    <p><span>@AppResource.Type: </span>@Html.invoiceTypeConverter( Model.invType)</p>
+                                </div>
+                                <div>
+                                    <p><span>@AppResource.Tables: </span>@Model.tables</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="bcrumb-block">
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a id="a_title" href="#">@AppResource.PreparingOrders</a></li>
+                                <li class="breadcrumb-item active" aria-current="page">@AppResource.Details</li>
+                            </ol>
+                        </nav>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="details-block">
+                        <form>
+                            <div class="form-group">
+                                <label for="preparing-time">@AppResource.PreparingTimeMinutes</label>
+                                <input type="number" min="0" class="form-control" id="preparing-time" value="@Model.preparingTime" placeholder="Preparing Time/Minutes..">
+                            </div>
+                            <div class="form-group">
+                                <label for="notes">@AppResource.Notes</label>
+                                <textarea class="form-control" id="notes" rows="3" placeholder="Notes..">@Model.notes</textarea>
+                            </div>
+                            <div class="form-group">
+                                <button type="button" class="btn btn-dark btn-block" onclick="saveValues()">@AppResource.Save</button>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="grid-block">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th scope="col">@AppResource.SequenceNumber</th>
+                                    <th scope="col">@AppResource.Item</th>
+                                    <th scope="col">@AppResource.Quantity</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.items)
+                                {
+                                    <tr>
+                                        <th scope="row">1</th>
+                                        <td>@item.itemName</td>
+                                        <td>@item.quantity</td>
+                                    </tr>
+                                }
+                               
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                @*<div class="col-12 warning">
+                    <div class="alert alert-warning my-3" role="alert">
+                        A simple warning alert—check it out!
+                    </div>
+                </div>*@
+                <div class="col-12" id="div-btn-status" style="display:@btnStatusDisplay">
+                    <button id="btn-status" class="btn btn-danger btn-block back mb-3" onclick="changeStatus()"> @Html.invoiceNextStatusConverter(Model.status)</button>
+                </div>
+                <div class="col-12">
+                    @using (Html.BeginForm("OrderPreparingList", "Kitchen", FormMethod.Post, new { id = "form1" }))
+                    {
+                        <input type="hidden" value="@Model.status" id="status" />
+                        <input type="hidden" value="@Model.orderPreparingId" id="orderPreparingId" />
+                        <input type="hidden" value="@Model.orderPreparingId" id="orderPreparingId" />
+                        <input type="hidden" value="@Model.shippingCompanyId" id="shippingCompanyId" />
+                        <button id="btn_back" class="btn btn-dark btn-block back mb-3">@AppResource.Back</button>
+                    }
+                </div>
+            </div>
+        </div>
+    </section>
+
+<div class="scroll-to-top" title="Go Up">
+    <i class="fa fa-chevron-up fa-lg"></i>
+</div>
+
+
+<script>
+
+     function saveValues() {
+        var prepTime = $('#preparing-time').val();
+        var notes = $('#notes').val();
+        var orderId = $('#orderPreparingId').val();
+
+        $.ajax({
+            url: '@Url.Action("SavePreparingTime", "Kitchen")',
+            data: { orderId: orderId, time: prepTime, notes: notes },
+            type: "POST",
+            async: false,
+            success: function (result) {
+
+            },
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+            alert('oops, something bad happened');
+            }
+        });
+    }
+
+     function changeStatus() {
+         var orderId = $('#orderPreparingId').val();
+         var status = $('#status').val();
+         var shippingCompanyId = $('#shippingCompanyId').val();
+
+        $.ajax({
+            url: '@Url.Action("changeOrderStatus", "Kitchen")',
+            data: { orderId: orderId, status: status },
+            type: "POST",
+            async: false,
+            success: function (result) {
+                if (result.message != "") {
+                    $('#status').val(result.message);
+                    $('#btn-status').text(result.nextStatus);
+
+                    if (result.message == "Done" || (result.message == "Ready" && shippingCompanyId != null))
+                        $('#div-btn-status').fadeOut(600);
+                }               
+            },
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+            alert('oops, something bad happened');
+            }
+        });
+    }
+
+      $('#btn_back').click(function () {
+
+        goBack();
+    });
+
+    $('#a_title').click(function () {
+        goBack();
+
+    });
+
+    function goBack() {
+
+        var branchId = $('#branchId').val();
+          if (branchId == null)
+            branchId = 0;
+
+        var action = 'OrderPreparingList?branchId=' + branchId;
+        $('#form1').attr('action', action);
+        $('#form1').submit();
+
+        return false;
+    }
+   
+</script>

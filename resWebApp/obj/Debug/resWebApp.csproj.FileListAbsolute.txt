@@ -234,3 +234,9 @@ D:\increase\Resturant\web-app\resWebApp\obj\Debug\ar\resWebApp.resources.dll
 D:\increase\Resturant\web-app\resWebApp\obj\Debug\resWebApp.csproj.CopyComplete
 D:\increase\Resturant\web-app\resWebApp\obj\Debug\resWebApp.dll
 D:\increase\Resturant\web-app\resWebApp\obj\Debug\resWebApp.pdb
+D:\increase\Resturant\web-app\resWebApp\bin\ar\images\avatar.jpg
+D:\increase\Resturant\web-app\resWebApp\bin\ar\images\increase-logo-01.png
+D:\increase\Resturant\web-app\resWebApp\bin\ar\images\increase-logo01.png
+D:\increase\Resturant\web-app\resWebApp\bin\en\images\avatar.jpg
+D:\increase\Resturant\web-app\resWebApp\bin\en\images\increase-logo-01.png
+D:\increase\Resturant\web-app\resWebApp\bin\en\images\increase-logo01.png

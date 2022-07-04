@@ -8,8 +8,8 @@ namespace resWebApp.Models
 {
     public class Global
     {
-        //public static string APIUri = "http://localhost:7474/api/";
-        public static string APIUri = "http://192.168.1.5:4437/api/";
+        public static string APIUri = "http://localhost:7474/api/";
+        //public static string APIUri = "http://192.168.1.5:4437/api/";
 
         #region pagination settings
         public static int rowsInPage = 5;
