@@ -42,10 +42,9 @@
                     <table class="table table-hover">
                         <thead>
                             <tr>
-                                <th scope="col">@AppResource.OrderCharp</th>
-                                <th scope="col">@AppResource.InvoiceCharp</th>
-                                <th scope="col">@AppResource.Type</th>
-                                <th></th>
+                                <th scope="col" class="col-5">@AppResource.OrderCharp</th>
+                                <th scope="col" class="col-4">@AppResource.Type</th>
+                                <th class="col-3"></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -53,7 +52,6 @@
                             {
                                 <tr>
                                     <th scope="row">@item.orderNum</th>
-                                    <td>@item.invNum</td>
                                     <td>@Html.invoiceTypeConverter(item.invType)</td>
                                     <td><button class="btn btn-danger btn-sm" onclick="location.href='@Url.Action("OrderPreparingDetails", "Kitchen", new { orderId = item.orderPreparingId })'">@AppResource.Details</button></td>
                                 </tr>
