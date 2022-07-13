@@ -100,7 +100,14 @@
                                     foreach (var item in Model.items[0].itemsIngredients)
                                     {
                                         <tr>
+                                            @if (item.isActive == 0)
+                                            {
                                             <td class="cancelled">@item.DishIngredientName</td>
+                                            }
+                                            else
+                                            {
+                                            <td>@item.DishIngredientName</td>
+                                            }
                                         </tr>
                                     }
                                 }
