@@ -34,7 +34,7 @@
                                     <p><span>@AppResource.InvoiceCharp: </span>@Model.invNum</p>
                                 </div>
                                 <div>
-                                    <p><span>@AppResource.Type: </span>@Html.invoiceTypeConverter( Model.invType)</p>
+                                    <p><span>@AppResource.Type: </span>@Html.invoiceTypeConverter(Model.invType)</p>
                                 </div>
                                 <div>
                                     <p><span>@AppResource.Tables: </span>@Model.tables</p>
@@ -72,32 +72,73 @@
                     </div>
                 </div>
                 <div class="col-12">
+                    <div class="details-block">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <label>@AppResource.Order:</label>
+                                <p>@Model.items[0].itemName</p>
+                            </div>
+                            <div class="col-sm-6">
+                                <label>@AppResource.Quantity:</label>
+                                <p>@Model.items[0].quantity</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12">
                     <div class="grid-block">
+                        <label>@AppResource.Ingredients:</label>
                         <table class="table table-hover">
                             <thead>
                                 <tr>
-                                    <th scope="col" class="col-8">@AppResource.Item</th>
-                                    <th scope="col" class="col-2">@AppResource.Quantity</th>
+                                    <th scope="col">@AppResource.Item</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach (var item in Model.items)
+                                @if (Model.items[0].itemsIngredients != null)
                                 {
+                                    foreach (var item in Model.items[0].itemsIngredients)
+                                    {
+                                        <tr>
+                                            <td class="cancelled">@item.DishIngredientName</td>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="grid-block">
+                        <label>Extra:</label>
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th scope="col">@AppResource.Item</th>
+                                    <th scope="col">@AppResource.Quantity</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model.items[0].itemExtras != null)
+                                {
+                                    foreach (var item in Model.items[0].itemExtras)
+                                    {
                                     <tr>
-                                        <th scope="row">@item.itemName</th>
+                                        <td>@item.itemName</td>
                                         <td>@item.quantity</td>
                                     </tr>
+                                    }
                                 }
-                               
+
                             </tbody>
                         </table>
                     </div>
                 </div>
                 @*<div class="col-12 warning">
-                    <div class="alert alert-warning my-3" role="alert">
-                        A simple warning alert—check it out!
-                    </div>
-                </div>*@
+            <div class="alert alert-warning my-3" role="alert">
+                A simple warning alert—check it out!
+            </div>
+        </div>*@
                 <div class="col-12" id="div-btn-status" style="display:@btnStatusDisplay">
                     <button id="btn-status" class="btn btn-danger btn-block back mb-3" onclick="changeStatus()"> @Html.invoiceNextStatusConverter(Model.status)</button>
                 </div>

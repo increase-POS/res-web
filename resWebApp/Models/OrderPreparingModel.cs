@@ -143,7 +143,21 @@ namespace resWebApp.Models
         public Nullable<int> categoryId { get; set; }
         public string categoryName { get; set; }
         public int sequence { get; set; }
+        public List<itemsTransferIngredientsModel> itemsIngredients { get; set; }
+        public List<ItemTransfer> itemExtras { get; set; }
         #endregion
+    }
+    public class itemsTransferIngredientsModel
+    {
+        public long itemsTransIngredId { get; set; }
+        public Nullable<long> itemsTransId { get; set; }
+        public Nullable<long> dishIngredId { get; set; }
+        public Nullable<long> itemUnitId { get; set; }
+        public byte isActive { get; set; }
+        public string notes { get; set; }
+        public string itemName { get; set; }
+        public string DishIngredientName { get; set; }
+        public bool isBasic { get; set; }
     }
     public class OrderPreparingStatus
     {
